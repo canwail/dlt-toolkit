@@ -32,12 +32,16 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git tag -a ${{ github.sha }} -m "Automated tag for commit ${{ github.sha }}"
-          git push origin ${{ github.sha }}
+          short_hash=$(git rev-parse --short ${{ github.sha }})
+          git tag -a $short_hash -m "Automated tag for commit ${{ github.sha }}"
+          git push origin $short_hash
+        shell: bash
 
       # Publish the release using gh-release
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: $short_hash
           files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
