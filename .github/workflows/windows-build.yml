@@ -31,17 +31,13 @@ jobs:
           Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
         shell: powershell
 
-      # Create a release
+      # Publish the release using gh-release
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.sha }}
-          release_name: "Commit ${{ github.sha }}"
-          body: "Automated release for commit ${{ github.sha }}"
-          draft: false
-          prerelease: true
 
       # Upload the .zip file to the release
       - name: Upload ZIP Asset
