@@ -13,34 +13,34 @@ jobs:
       # Checkout code
       - uses: actions/checkout@v4
 
-      # Set up Rust
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+      # # Set up Rust
+      # - uses: actions-rs/toolchain@v1
+      #   with:
+      #     toolchain: stable
 
-      # Build the project
-      - run: cargo build --release
+      # # Build the project
+      # - run: cargo build --release
 
-      # Create a .zip file
-      - run: |
-          New-Item -ItemType Directory -Path artifacts -Force
-          Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
-        shell: powershell
+      # # Create a .zip file
+      # - run: |
+      #     New-Item -ItemType Directory -Path artifacts -Force
+      #     Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
+      #   shell: powershell
 
-      # Create a Git tag for the commit
-      - name: Create Git Tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          short_hash=$(git rev-parse --short ${{ github.sha }})
-          git tag -a $short_hash -m "Automated tag for commit ${{ github.sha }}"
-          git push origin $short_hash
-        shell: bash
+      # # Create a Git tag for the commit
+      # - name: Create Git Tag
+      #   run: |
+      #     git config user.name "GitHub Actions"
+      #     git config user.email "actions@github.com"
+      #     short_hash=$(git rev-parse --short ${{ github.sha }})
+      #     git tag -a $short_hash -m "Automated tag for commit ${{ github.sha }}"
+      #     git push origin $short_hash
+      #   shell: bash
 
       # Publish the release using gh-release
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.sha_short }}
-          files: artifacts/dlt-toolkit-${{ github.sha }}.zip
+          tag_name: rel-${{ github.sha_short }}
+          # files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
