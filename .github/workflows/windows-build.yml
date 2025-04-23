@@ -40,8 +40,7 @@ jobs:
       # Publish the release using gh-release
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: $short_hash
+          tag_name: ${{ github.sha_short }}
           files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
