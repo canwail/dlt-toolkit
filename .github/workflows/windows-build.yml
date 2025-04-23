@@ -13,19 +13,19 @@ jobs:
       # Checkout code
       - uses: actions/checkout@v4
 
-      # # Set up Rust
-      # - uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: stable
+      # Set up Rust
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
 
-      # # Build the project
-      # - run: cargo build --release
+      # Build the project
+      - run: cargo build --release
 
-      # # Create a .zip file
-      # - run: |
-      #     New-Item -ItemType Directory -Path artifacts -Force
-      #     Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
-      #   shell: powershell
+      # Create a .zip file
+      - run: |
+          New-Item -ItemType Directory -Path artifacts -Force
+          Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
+        shell: powershell
 
       # # Create a Git tag for the commit
       - name: Create Git Tag
@@ -40,7 +40,7 @@ jobs:
       # Publish the release using gh-release
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name  }}
+          tag_name: Binaries
           files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
