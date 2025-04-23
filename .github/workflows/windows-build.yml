@@ -27,19 +27,20 @@ jobs:
       #     Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
       #   shell: powershell
 
-      # Create a Git tag for the commit
+      # # Create a Git tag for the commit
       - name: Create Git Tag
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git tag -a ${{ github.sha_short }} -m "Automated tag for commit ${{ github.sha }}"
-          git push origin ${{ github.sha_short }}
+          short_hash=$(git rev-parse --short ${{ github.sha }})
+          git tag -a $short_hash -m "Automated tag for commit ${{ github.sha }}"
+          git push origin $short_hash
         shell: bash
 
       # Publish the release using gh-release
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.sha_short }}
+          tag_name: test
           # files: artifacts/dlt-toolkit-${{ github.sha }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
