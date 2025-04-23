@@ -27,8 +27,9 @@ jobs:
       # Create a .zip file with the hash name
       - name: Create ZIP Artifact
         run: |
-          mkdir -p artifacts
-          zip artifacts/dlt-toolkit-${{ github.sha }}.zip target/release/dlt-toolkit.exe
+          New-Item -ItemType Directory -Path artifacts -Force
+          Compress-Archive -Path target/release/dlt-toolkit.exe -DestinationPath artifacts/dlt-toolkit-${{ github.sha }}.zip
+        shell: powershell
 
       # Create a release
       - name: Create GitHub Release
